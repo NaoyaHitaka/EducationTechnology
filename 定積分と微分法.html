@@ -1,0 +1,96 @@
+<html>
+    <body>
+        <h3>定積分と微分法</h3>
+        <p>aを定数とするとき、定積分 &int; <sub>a</sub><sup>x</sup>f(t)dt について考えよう。</p>
+        <p>たとえば、&int; <sub>2</sub><sup>x</sup>(3t<sup>2</sup> - 1)dt = [t<sup>3</sup> - t]<sub>2</sub><sup>x</sup> = x<sup>3</sup> - x - 6</p>
+        <p>より、&int; <sub>2</sub><sup>x</sup>(3t<sup>2</sup>- 1)dt はxの関数である。</p>
+        <p>この関数をxで微分すると・・・</p>
+        <p>d/dx &int; <sub>2</sub><sup>x</sup>(3t<sup>2</sup> - 1)dt = (x<sup>3</sup> - x - 6)' = 3x<sup>2</sup> - 1</p>
+        <p>aは定数とする。関数f(t)に対してF'(t) = f(t)のとき、定積分 &int; <sub>a</sub><sup>x</sup> f(t)dt = F(t) - F(a) はxの関数である。</p>
+        <p>右辺の関数をxで微分するとF'(x) - (F(a))' = f(x) となるから、次のことが成り立つ。</p>
+
+        <h4>aを定数とするとき、xの関数 &int;<sub>a</sub><sup>x</sup>f(t)dtの導関数はf(x)である。</h4>
+        <h4> d/dx &int; <sub>a</sub><sup>x</sup>f(t)dt = f(x)</h4>
+
+        <h4>練習32 xの関数 &int; <sub>0</sub><sup>x</sup>(3t<sup>2</sup> -2t - 1)dtの導関数求めよ。</h4>
+        <!-- フォームとボタンの生成 -->
+<form onsubmit="calculateAndDisplayDerivative(event)">
+    <label for="inputX">xの値:</label>
+    <input type="number" id="inputX" min="-10" max="10" step="0.1">
+    <button type="submit">計算結果の表示</button>
+  </form>
+  
+  <!-- 結果を表示する領域 -->
+  <div id="result9"></div>
+  
+  <!-- スクリプト -->
+  <script>
+    function calculateAndDisplayDerivative(event) {
+      event.preventDefault();
+  
+      // 入力値の取得
+      const x = parseFloat(document.getElementById('inputX').value);
+  
+      // 定積分の計算
+      const definiteIntegralResult = calculateDefiniteIntegral(x);
+  
+      // 導関数の計算
+      const derivativeResult = calculateDerivative(x);
+  
+      // 結果の表示
+      const resultText = `定積分の結果: ${definiteIntegralResult}<br>導関数の結果: ${derivativeResult}`;
+      document.getElementById('result').innerHTML = resultText;
+    }
+  
+    function calculateDefiniteIntegral(x) {
+      // 定積分の計算式
+      const definiteIntegralResult = Math.pow(x, 3) - Math.pow(x, 2) - x;
+      return definiteIntegralResult;
+    }
+  
+    function calculateDerivative(x) {
+      // 導関数の計算式
+      const derivativeResult = 3 * Math.pow(x, 2) - 2 * x - 1;
+      return derivativeResult;
+    }
+  </script>
+  
+
+        <h4>応用例題4 次の等式を満たす関数f(x)と定数aの値を求めよ。</h4>
+        <p>&int; <sub>a</sub><sup>x</sup>f(t)dt = x<sup>2</sup> - 3x + 2</p>
+        
+        <p>等式の両辺の関数をxで微分すると・・・ f(x) = 2x - 3</p>
+        <p>また、与えられた等式でx = aとおくと</p>
+        <p>&int; <sub>a</sub><sup>a</sup>f(t)dt = a<sup>2</sup>- 3a + 2</p>
+        <p>すなわち　0 = a<sup>2</sup>- 3a + 2</p>
+        <p>これを解いて　a = 1, 2</p>
+
+        <h4>Answer. f(x) = 2x - 3, a = 1, 2</h4>
+
+        <h4>練習33 次の等式を満たすf(x)と定数aの値を求めよ。</h4>
+<p><sub>a</sub><sup>x</sup>f(t)dt = x<sup>2</sup>-x - 2</p>
+
+<!-- 計算結果を表示する領域 -->
+<div id="result10"></div>
+
+<!-- ボタンを押して計算を実行する -->
+<button onclick="calculateFunctionAndConstant()">計算の実行</button>
+
+<!-- JavaScriptのコード -->
+<script>
+  function calculateFunctionAndConstant() {
+    // f(x) と a の値を求める計算の流れ
+    let equation = "<sub>a</sub><sup>x</sup>f(t)dt = x<sup>2</sup>-x - 2";
+    let step1 = "仮定する関数 f(x) の形を決める（例: f(x) = x + c）";
+    let step2 = "等式の左辺を積分する";
+    let step3 = "等式の右辺と比較して、指数の項と係数の項を一致させる";
+    let step4 = "求まった値を解として得る（例: f(x) = x - 1/2、a = 3）";
+
+    // 計算結果を表示する領域に結果を表示
+    let result = equation + "<br><br>" + step1 + "<br>" + step2 + "<br>" + step3 + "<br>" + step4;
+    document.getElementById("result10").innerHTML = result;
+  }
+</script>
+
+    </body>
+</html>

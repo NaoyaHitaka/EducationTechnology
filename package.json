@@ -1,0 +1,8 @@
+{
+    "name": "my-project",
+    "version": "1.0.0",
+    "dependencies": {
+        "math.js": "^1.1.46",
+        "mathjs": "^11.8.0"
+    }
+}

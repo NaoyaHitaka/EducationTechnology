@@ -1,0 +1,1001 @@
+<html>
+    <head>
+        <!-- Chart.jsのスクリプトタグ -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+ <body>  
+  <h2>P.194 定積分</h2>
+  <p>関数f(x) = 2x の原始関数F(x)はいくつもあって１つに定まらないが、例えばF(3)-F(1), F(2)-F(4)の値は、F(x)の選び方に関係なく、それぞれ１つに定まる。このことについて学ぶことにしよう。</p>
+
+  <p>関数f(x) = 2x の任意の原始関数F(x)は、</p>
+  <span class=span>F(x) = x<sup>2</sup> + C (Cは定数)</span>
+  <p>の形に表される。ここで、例えばF(3)-F(1)の値は</p>
+  <span class=span>F(3) - F(1) = (3<sup>2</sup>+C) - (1<sup>2</sup> + C) = 8</span>
+  <span>となり、定数Cを含まない値になる。</span>
+  <p>一般に、関数f(x)の原始関数の１つをF(x)とし、a,bをf(x)の定義域内の任意の値とするとき、F(b)-F(a) の値はF(x)の選び方とは関係なく、a, bの値だけで定まる。このF(b)-F(a)を、関数f(x)のaからbまでの<span class=span>定積分</span>といい、次のように書く。</p>
+  <h4>定積分: ∫<sub>a</sub><sup>b</sup> f(x) dx</h4>
+  <p>また、F(b)-F(a)を<h4>[F(x)]<sub>a</sub><sup>b</sup></h4>とも書く。</p>
+
+  <h2>定積分</h2>
+  <p>F'(x) = f(x)のとき　<h2>∫<sub>a</sub><sup>b</sup> f(x) dx = [F(x)]<sub>a</sub><sup>b</sup> = F(b) - F(a)</h2></p>
+
+  <p>定積分∫<sub>a</sub><sup>b</sup> f(x) dx において、aを<span>下端</span>、bを<span>上端</span>という。</p>
+  <p>また、この定積分を求めることを、関数f(x)をaからbまで<span>積分する</span>という。</p>
+  <p>aとbの大小関係は、a < b, a = b, a > bのいずれでもよい。</p>
+
+  <h4>例16 定積分 ∫<sub>1</sub><sup>2</sup> x<sup>2</sup> dx の計算</h4>
+  <p>(x<sup>3</sup>/3)' = x<sup>2</sup> より、  ∫<sub>1</sub><sup>2</sup> x<sup>2</sup> dx = [x<sup>3</sup>/3]<sub>1</sub><sup>2</sup> = 8/3 - &frac13; = 7/3</p>
+
+  <h4>練習27</h4>
+  <p>(1)∫<sub>1</sub><sup>3</sup> x dx</p>
+
+  <!-- 計算結果の表示 -->
+  <form onsubmit="calculateDefiniteIntegral1(event)">
+    <button type="submit">計算結果の表示</button>
+  </form>
+  
+  <!-- 結果を表示する領域 -->
+  <div id="result1"></div>
+  
+  <!-- グラフ表示ボタン -->
+  <button onclick="drawGraph1()">グラフ表示</button>
+  
+  <!-- グラフを描画するキャンバス -->
+  <canvas id="graph1"></canvas>
+  
+  <script>
+    function calculateDefiniteIntegral1(event) {
+      event.preventDefault();
+  
+      const a = 1; // 積分区間の下限
+      const b = 3; // 積分区間の上限
+  
+      const result1 = calculateIntegral1(a, b);
+      document.getElementById('result1').textContent = `定積分の計算結果: ${result1}`;
+    }
+  
+    function calculateIntegral1(a, b) {
+      const n = 1000; // 積分区間を等分割する数
+      const h = (b - a) / n; // 分割幅
+  
+      let sum = 0;
+  
+      for (let i = 0; i < n; i++) {
+        const x = a + (i + 0.5) * h; // 台形則における中点のx座標
+        sum += x * h;
+      }
+  
+      return sum;
+    }
+  
+    function drawGraph1() {
+      const a = 1; // 積分区間の下限
+      const b = 3; // 積分区間の上限
+  
+      const n = 100; // 分割数
+      const h = (b - a) / n; // 分割幅
+  
+      // xの値を生成
+      const xValues = [];
+      for (let i = 0; i <= n; i++) {
+        const x = a + i * h;
+        xValues.push(x);
+      }
+  
+      // f(x)の値を計算
+      const fValues = xValues.map((x) => x);
+  
+      // グラフのデータ
+      const data = {
+        labels: xValues,
+        datasets: [
+          {
+            label: 'f(x) = x',
+            data: fValues,
+            fill: false,
+            borderColor: 'blue',
+          },
+        ],
+      };
+  
+      // グラフのオプション
+      const options = {
+        responsive: true,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'x',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'f(x)',
+            },
+          },
+        },
+      };
+  
+      // グラフを描画
+      const ctx = document.getElementById('graph1').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options,
+      });
+    }
+  </script>
+  
+<p>(2)∫<sub>-1</sub><sup>2</sup> x<sup>2</sup> dx</p>
+
+<!-- 計算結果の表示 -->
+<form onsubmit="calculateDefiniteIntegral2(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 結果を表示する領域 -->
+<div id="result2"></div>
+
+<!-- グラフ表示ボタン -->
+<button onclick="drawGraph2()">グラフ表示</button>
+
+<!-- グラフを描画するキャンバス -->
+<canvas id="graph2"></canvas>
+
+<script>
+  function calculateDefiniteIntegral2(event) {
+    event.preventDefault();
+
+    const a = -1; // 積分区間の下限
+    const b = 2; // 積分区間の上限
+
+    const result2 = calculateIntegral2(a, b);
+    document.getElementById('result2').textContent = `定積分の計算結果: ${result2}`;
+  }
+
+  function calculateIntegral2(a, b) {
+    const n = 1000; // 積分区間を等分割する数
+    const h = (b - a) / n; // 分割幅
+
+    let sum = 0;
+
+    for (let i = 0; i < n; i++) {
+      const x = a + (i + 0.5) * h; // 台形則における中点のx座標
+      const f = Math.pow(x, 2); // 被積分関数の値
+      sum += f * h;
+    }
+
+    return sum;
+  }
+
+  function drawGraph2() {
+    const a = -1; // 積分区間の下限
+    const b = 2; // 積分区間の上限
+
+    const n = 100; // 分割数
+    const h = (b - a) / n; // 分割幅
+
+    // xの値を生成
+    const xValues = [];
+    for (let i = 0; i <= n; i++) {
+      const x = a + i * h;
+      xValues.push(x);
+    }
+
+    // f(x)の値を計算
+    const fValues = xValues.map((x) => Math.pow(x, 2));
+
+    // グラフのデータ
+    const data = {
+      labels: xValues,
+      datasets: [
+        {
+          label: 'f(x) = x^2',
+          data: fValues,
+          fill: false,
+          borderColor: 'red',
+        },
+      ],
+    };
+
+    // グラフのオプション
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'x',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'f(x)',
+          },
+        },
+      },
+    };
+
+    // グラフを描画
+    const ctx = document.getElementById('graph2').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options,
+    });
+  }
+</script>
+
+
+
+
+
+  <p>(3)∫<sub>3</sub><sup>0</sup> 2 dx</p>
+  <!-- 計算結果の表示 -->
+  <form onsubmit="calculateDefiniteIntegral3(event)">
+    <button type="submit">計算結果の表示</button>
+  </form>
+  
+  <!-- 結果を表示する領域 -->
+  <div id="result3"></div>
+  
+  <!-- グラフ表示ボタン -->
+  <button onclick="drawGraph3()">グラフ表示</button>
+  
+  <!-- グラフを描画するキャンバス -->
+  <canvas id="graph3"></canvas>
+  
+  <script>
+    function calculateDefiniteIntegral3(event) {
+      event.preventDefault();
+  
+      const a = 3; // 積分区間の下限
+      const b = 0; // 積分区間の上限
+  
+      const result3 = calculateIntegral3(a, b);
+      document.getElementById('result3').textContent = `定積分の計算結果: ${result3}`;
+    }
+  
+    function calculateIntegral3(a, b) {
+      const n = 1000; // 積分区間を等分割する数
+      const h = (b - a) / n; // 分割幅
+  
+      let sum = 0;
+  
+      for (let i = 0; i < n; i++) {
+        const x = a + (i + 0.5) * h; // 台形則における中点のx座標
+        sum += 2 * h; // 被積分関数が 2 のため、2 * h を足す
+      }
+  
+      return sum;
+    }
+  
+    function drawGraph3() {
+      const a = 3; // 積分区間の下限
+      const b = 0; // 積分区間の上限
+  
+      const n = 100; // 分割数
+      const h = (b - a) / n; // 分割幅
+  
+      // xの値を生成
+      const xValues = [];
+      for (let i = 0; i <= n; i++) {
+        const x = a + i * h;
+        xValues.push(x);
+      }
+  
+      // f(x)の値を計算
+      const fValues = xValues.map((x) => 2); // 被積分関数が 2 のため、常に 2 を返す
+  
+      // グラフのデータ
+      const data = {
+        labels: xValues,
+        datasets: [
+          {
+            label: 'f(x) = 2',
+            data: fValues,
+            fill: false,
+            borderColor: 'green',
+          },
+        ],
+      };
+  
+      // グラフのオプション
+      const options = {
+        responsive: true,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'x',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'f(x)',
+            },
+          },
+        },
+      };
+  
+      // グラフを描画
+      const ctx = document.getElementById('graph3').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options,
+      });
+    }
+  </script>
+
+
+  <h4>例題7 次の定積分を求めよ。</h4>
+  <p>(1)∫<sub>0</sub><sup>1</sup> (-x<sup>2</sup> + 3x) dx</p>
+  <p>=[-x<sup>3</sup>/3 + 3/2 x<sup>2</sup>]<sub>0</sub><sup>1</sup></p>
+  <p>=(-1<sup>3</sup>/3 + 3/2 * 1<sup>2</sup>) - (-0<sup>3</sup> / 3 + 3/2 * 0<sup>2</sup>) = 7/6</p>
+  
+
+<!-- グラフ表示ボタン -->
+<button onclick="drawGraph4()">グラフ表示</button>
+
+<!-- グラフを描画するキャンバス -->
+<canvas id="graph4"></canvas>
+
+<script>
+  function drawGraph4() {
+    const a = 0; // 積分区間の下限
+    const b = 1; // 積分区間の上限
+
+    const n = 100; // 分割数
+    const h = (b - a) / n; // 分割幅
+
+    // xの値を生成
+    const xValues = [];
+    for (let i = 0; i <= n; i++) {
+      const x = a + i * h;
+      xValues.push(x);
+    }
+
+    // f(x)の値を計算
+    const fValues = xValues.map((x) => (-x) ** 2 + 3 * x);
+
+    // グラフのデータ
+    const data = {
+      labels: xValues,
+      datasets: [
+        {
+          label: 'f(x) = -x^2 + 3x',
+          data: fValues,
+          fill: false,
+          borderColor: 'blue',
+        },
+      ],
+    };
+
+    // グラフのオプション
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'x',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'f(x)',
+          },
+        },
+      },
+    };
+
+    // グラフを描画
+    const ctx = document.getElementById('graph4').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options,
+    });
+  }
+</script>
+
+
+  <p>(2)∫<sub>-1</sub><sup>2</sup> (x + 4)(x - 2) dx</p>
+  <p>=∫<sub>-1</sub><sup>2</sup> (x<sup>2</sup> + 2x - 8) dx</p>
+  <p>=[x<sup>3</sup>/3 + x<sup>2</sup> - 8x]<sub>-1</sub><sup>2</sup></p>
+  <p>=(2<sup>3</sup>/3 + 2<sup>2</sup>-8 * 2) - {(-1)<sup>3</sup>/3 + (-1)<sup>2</sup>- 8(-1)</p>
+  <p>= 18</p>
+  
+
+<!-- グラフ表示ボタン -->
+<button onclick="drawGraph5()">グラフ表示</button>
+
+<!-- グラフを描画するキャンバス -->
+<canvas id="graph5"></canvas>
+
+<script>
+  function drawGraph5() {
+    const a = -1; // 積分区間の下限
+    const b = 2; // 積分区間の上限
+
+    const n = 100; // 分割数
+    const h = (b - a) / n; // 分割幅
+
+    // xの値を生成
+    const xValues = [];
+    for (let i = 0; i <= n; i++) {
+      const x = a + i * h;
+      xValues.push(x);
+    }
+
+    // f(x)の値を計算
+    const fValues = xValues.map((x) => (x + 4) * (x - 2));
+
+    // グラフのデータ
+    const data = {
+      labels: xValues,
+      datasets: [
+        {
+          label: 'f(x) = (x + 4)(x - 2)',
+          data: fValues,
+          fill: false,
+          borderColor: 'blue',
+        },
+      ],
+    };
+
+    // グラフのオプション
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'x',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'f(x)',
+          },
+        },
+      },
+    };
+
+    // グラフを描画
+    const ctx = document.getElementById('graph5').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options,
+    });
+  }
+</script>
+
+
+  <h4>練習28 次の定積分を求めよ</h4>
+  <p>(1)∫<sub>0</sub><sup>2</sup> (x<sup>2</sup> + 4x - 5) dx</p>
+
+<!-- 計算結果の表示 -->
+<form onsubmit="calculateDefiniteIntegral6(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 結果を表示する領域 -->
+<div id="result6"></div>
+
+<!-- グラフ表示ボタン -->
+<button onclick="drawGraph6()">グラフ表示</button>
+
+<!-- グラフを描画するキャンバス -->
+<canvas id="graph6"></canvas>
+
+<script>
+  function calculateDefiniteIntegral6(event) {
+    event.preventDefault();
+
+    const a = 0; // 積分区間の下限
+    const b = 2; // 積分区間の上限
+
+    const result6 = calculateIntegral(a, b);
+    document.getElementById('result6').textContent = `定積分の計算結果: ${result6}`;
+  }
+
+  function calculateIntegral(a, b) {
+    const n = 1000; // 積分区間を等分割する数
+    const h = (b - a) / n; // 分割幅
+
+    let sum = 0;
+
+    for (let i = 0; i < n; i++) {
+      const x = a + (i + 0.5) * h; // 台形則における中点のx座標
+      const f = Math.pow(x, 2) + 4 * x - 5; // 被積分関数の値
+      sum += f * h;
+    }
+
+    return sum;
+  }
+
+  function drawGraph6() {
+    const a = 0; // 積分区間の下限
+    const b = 2; // 積分区間の上限
+
+    const n = 100; // 分割数
+    const h = (b - a) / n; // 分割幅
+
+    // xの値を生成
+    const xValues = [];
+    for (let i = 0; i <= n; i++) {
+      const x = a + i * h;
+      xValues.push(x);
+    }
+
+    // f(x)の値を計算
+    const fValues = xValues.map((x) => Math.pow(x, 2) + 4 * x - 5);
+
+    // グラフのデータ
+    const data = {
+      labels: xValues,
+      datasets: [
+        {
+          label: 'f(x) = x^2 + 4x - 5',
+          data: fValues,
+          fill: false,
+          borderColor: 'blue',
+        },
+      ],
+    };
+
+    // グラフのオプション
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'x',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'f(x)',
+          },
+        },
+      },
+    };
+
+    // グラフを描画
+    const ctx = document.getElementById('graph6').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options,
+    });
+  }
+</script>
+
+  
+  <p>(2)∫<sub>2</sub><sup>3</sup> (x - 2)(x - 3) dx</p>
+
+<!-- 計算結果の表示 -->
+<form onsubmit="calculateDefiniteIntegral7(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 結果を表示する領域 -->
+<div id="result7"></div>
+
+<!-- グラフ表示ボタン -->
+<button onclick="drawGraph7()">グラフ表示</button>
+
+<!-- グラフを描画するキャンバス -->
+<canvas id="graph7"></canvas>
+
+<script>
+  function calculateDefiniteIntegral7(event) {
+    event.preventDefault();
+
+    const a = 2; // 積分区間の下限
+    const b = 3; // 積分区間の上限
+
+    const result6 = calculateIntegral(a, b);
+    document.getElementById('result7').textContent = `定積分の計算結果: ${result6}`;
+  }
+
+  function calculateIntegral(a, b) {
+    const n = 1000; // 積分区間を等分割する数
+    const h = (b - a) / n; // 分割幅
+
+    let sum = 0;
+
+    for (let i = 0; i < n; i++) {
+      const x = a + (i + 0.5) * h; // 台形則における中点のx座標
+      const f = (x - 2) * (x - 3); // 被積分関数の値
+      sum += f * h;
+    }
+
+    return sum;
+  }
+
+  function drawGraph7() {
+    const a = 2; // 積分区間の下限
+    const b = 3; // 積分区間の上限
+
+    const n = 100; // 分割数
+    const h = (b - a) / n; // 分割幅
+
+    // xの値を生成
+    const xValues = [];
+    for (let i = 0; i <= n; i++) {
+      const x = a + i * h;
+      xValues.push(x);
+    }
+
+    // f(x)の値を計算
+    const fValues = xValues.map((x) => (x - 2) * (x - 3));
+
+    // グラフのデータ
+    const data = {
+      labels: xValues,
+      datasets: [
+        {
+          label: 'f(x) = (x - 2)(x - 3)',
+          data: fValues,
+          fill: false,
+          borderColor: 'green',
+        },
+      ],
+    };
+
+    // グラフのオプション
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'x',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'f(x)',
+          },
+        },
+      },
+    };
+
+    // グラフを描画
+    const ctx = document.getElementById('graph7').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options,
+    });
+  }
+</script>
+
+
+
+  <h4>練習28 + α 友達が作った定積分を実際に計算してから答えが合っているかどうかを確認してみよう！グラフも作ってみよう！</h4>
+  <p>&int; <sub><input type="number" id="sub" min="-10" max="10"></sub><sup><input type="number" id="sup" min="-10" max="10"></sup><input type="number" id="numerator" min="-10" max="10"> / <input type="number" id="denominator" min="1" max="10"> x<sup><input type="number" id="exponent" min="1" max="5"></sup>dx</p>
+
+<!-- 計算結果表示 -->
+<form onsubmit="calculateDefiniteIntegral8(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 結果を表示する領域 -->
+<div id="result8"></div>
+
+<!-- グラフ表示ボタン -->
+<button onclick="drawGraph8()">グラフ表示</button>
+
+<!-- グラフを描画するキャンバス -->
+<canvas id="graph8"></canvas>
+
+<script>
+  function calculateDefiniteIntegral8(event) {
+    event.preventDefault();
+
+    const sub = parseInt(document.getElementById('sub').value); // 積分区間の下限
+    const sup = parseInt(document.getElementById('sup').value); // 積分区間の上限
+    const numerator = parseInt(document.getElementById('numerator').value); // 分子の定数項
+    const denominator = parseInt(document.getElementById('denominator').value); // 分母の定数項
+    const exponent = parseInt(document.getElementById('exponent').value); // xの指数
+
+    const result8 = calculateIntegral8(sub, sup, numerator, denominator, exponent);
+    document.getElementById('result8').textContent = `定積分の計算結果: ${result8}`;
+  }
+
+  function calculateIntegral8(sub, sup, numerator, denominator, exponent) {
+    const n = 1000; // 積分区間を等分割する数
+    const h = (sup - sub) / n; // 分割幅
+
+    let sum = 0;
+
+    for (let i = 0; i < n; i++) {
+      const x = sub + (i + 0.5) * h; // 台形則における中点のx座標
+      const f = (numerator / denominator) * Math.pow(x, exponent); // 被積分関数の値
+      sum += f * h;
+    }
+
+    return sum;
+  }
+
+  function drawGraph8() {
+    const sub = parseInt(document.getElementById('sub').value); // 積分区間の下限
+    const sup = parseInt(document.getElementById('sup').value); // 積分区間の上限
+    const numerator = parseInt(document.getElementById('numerator').value); // 分子の定数項
+    const denominator = parseInt(document.getElementById('denominator').value); // 分母の定数項
+    const exponent = parseInt(document.getElementById('exponent').value); // xの指数
+
+    const n = 100; // 分割数
+    const h = (sup - sub) / n; // 分割幅
+
+    // xの値を生成
+    const xValues = [];
+    for (let i = 0; i <= n; i++) {
+      const x = sub + i * h;
+      xValues.push(x);
+    }
+
+    // f(x)の値を計算
+    const fValues = xValues.map((x) => (numerator / denominator) * Math.pow(x, exponent));
+
+    // グラフのデータ
+    const data = {
+      labels: xValues,
+      datasets: [
+        {
+          label: `f(x) = ${numerator} / ${denominator} * x^${exponent}`,
+          data: fValues,
+          fill: false,
+          borderColor: 'blue',
+        },
+      ],
+    };
+
+    // グラフのオプション
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'x',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'f(x)',
+          },
+        },
+      },
+    };
+
+    // グラフを描画
+    const ctx = document.getElementById('graph8').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options,
+    });
+  }
+</script>
+
+<h4>例17 変数がxでない関数の定積分</h4>
+<p>&int; <sub>0</sub><sup>1</sup>(t<sup>2</sup>-4)dt = [t<sup>3</sup> / 3 - 2t<sup>2</sup>]<sub>0</sub><sup>1</sup> = (1/3 - 2) - 0 = -5 / 3</p>
+
+<h4>練習29 次の定積分を求めよ。</h4>
+<p>(1)&int; <sub>-1</sub><sup>2</sup>(-3t<sup>2</sup>+ t + 1)dt</p>
+<!-- 計算結果の表示 -->
+<form onsubmit="calculateDefiniteIntegral10(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 結果を表示する領域 -->
+<div id="result10"></div>
+
+<!-- グラフ表示ボタン -->
+<button onclick="drawGraph10()">グラフ表示</button>
+
+<!-- グラフを描画するキャンバス -->
+<canvas id="graph10"></canvas>
+
+<script>
+  function calculateDefiniteIntegral10(event) {
+    event.preventDefault();
+
+    const a = -1; // 積分区間の下限
+    const b = 2; // 積分区間の上限
+
+    const result10 = calculateIntegral(a, b);
+    document.getElementById('result10').textContent = `定積分の計算結果: ${result10}`;
+  }
+
+  function calculateIntegral(a, b) {
+    const n = 1000; // 積分区間を等分割する数
+    const h = (b - a) / n; // 分割幅
+
+    let sum = 0;
+
+    for (let i = 0; i < n; i++) {
+      const t = a + (i + 0.5) * h; // 台形則における中点のx座標
+      const f = -3 * Math.pow(t, 2) + t + 1; // 被積分関数の値
+      sum += f * h;
+    }
+
+    return sum;
+  }
+
+  function drawGraph10() {
+    const a = -1; // 積分区間の下限
+    const b = 2; // 積分区間の上限
+
+    const n = 100; // 分割数
+    const h = (b - a) / n; // 分割幅
+
+    // tの値を生成
+    const tValues = [];
+    for (let i = 0; i <= n; i++) {
+      const t = a + i * h;
+      tValues.push(t);
+    }
+
+    // f(t)の値を計算
+    const fValues = tValues.map((t) => -3 * Math.pow(t, 2) + t + 1);
+
+    // グラフのデータ
+    const data = {
+      labels: tValues,
+      datasets: [
+        {
+          label: 'f(t) = -3t^2 + t + 1',
+          data: fValues,
+          fill: false,
+          borderColor: 'blue',
+        },
+      ],
+    };
+
+    // グラフのオプション
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 't',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'f(t)',
+          },
+        },
+      },
+    };
+
+    // グラフを描画
+    const ctx = document.getElementById('graph10').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options,
+    });
+  }
+</script>
+
+<p>(2)&int; <sub>-1</sub><sup>1</sup>2(t + 3)(t - 2)dt</p>
+<!-- 計算結果の表示 -->
+<form onsubmit="calculateDefiniteIntegral11(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 結果を表示する領域 -->
+<div id="result11"></div>
+
+<!-- グラフ表示ボタン -->
+<button onclick="drawGraph11()">グラフ表示</button>
+
+<!-- グラフを描画するキャンバス -->
+<canvas id="graph11"></canvas>
+
+<script>
+  function calculateDefiniteIntegral11(event) {
+    event.preventDefault();
+
+    const a = -1; // 積分区間の下限
+    const b = 1; // 積分区間の上限
+
+    const result11 = calculateIntegral(a, b);
+    document.getElementById('result11').textContent = `定積分の計算結果: ${result11}`;
+  }
+
+  function calculateIntegral(a, b) {
+    const n = 1000; // 積分区間を等分割する数
+    const h = (b - a) / n; // 分割幅
+
+    let sum = 0;
+
+    for (let i = 0; i < n; i++) {
+      const t = a + (i + 0.5) * h; // 台形則における中点のx座標
+      const f = 2 * (t + 3) * (t - 2); // 被積分関数の値
+      sum += f * h;
+    }
+
+    return sum;
+  }
+
+  function drawGraph11() {
+    const a = -1; // 積分区間の下限
+    const b = 1; // 積分区間の上限
+
+    const n = 100; // 分割数
+    const h = (b - a) / n; // 分割幅
+
+    // tの値を生成
+    const tValues = [];
+    for (let i = 0; i <= n; i++) {
+      const t = a + i * h;
+      tValues.push(t);
+    }
+
+    // f(t)の値を計算
+    const fValues = tValues.map((t) => 2 * (t + 3) * (t - 2));
+
+    // グラフのデータ
+    const data = {
+      labels: tValues,
+      datasets: [
+        {
+          label: 'f(t) = 2(t + 3)(t - 2)',
+          data: fValues,
+          fill: false,
+          borderColor: 'blue',
+        },
+      ],
+    };
+
+    // グラフのオプション
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 't',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'f(t)',
+          },
+        },
+      },
+    };
+
+    // グラフを描画
+    const ctx = document.getElementById('graph11').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: options,
+    });
+  }
+</script>
+
+ </body>
+</html>

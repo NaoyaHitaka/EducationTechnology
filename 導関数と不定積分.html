@@ -1,0 +1,142 @@
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+</head>
+
+<body>  
+  <h1>P.190　積分法（不定積分）</h1>
+  <p>xで微分するとf(x)になる関数をf(x)の<span class=span>原始関数</span>という。</p>  
+  <p>すなわち、F'(x)=f(x)のとき、F(x)はf(x)の原始関数である。</p>
+
+  <h4>例12</h4>
+  <p>(x<sup>2</sup>)'=2xであるから、x<sup>2</sup>は2xの原始関数である。</p>
+
+  <h4>練習22</h4>
+  <p>次の中から、3x<sup>2</sup>の原始関数であるものを選べ。</p>
+  <form name = form1>
+  <label>
+    <input type="checkbox" name="lesson22" value="1">
+    ①6x
+  </label>
+  <label>
+    <input type="checkbox" name="lesson22" value="2">
+    ②x<sup>3</sup>
+  </label>
+  <label>
+    <input type="checkbox" name="lesson22" value="3">
+    ③x<sup>3</sup>+2x
+  </label>
+  <label>
+    <input type="checkbox" name="lesson22" value="4">
+    ④x<sup>3</sup>-4
+  </label>
+  </form>
+  
+  <input type="button" value="解答" onclick="myCheck()"> 
+  <div id="text/javascript"></div>
+  <!--②と④を選択したら正解。それ以外不正解。というものを表示する JSで-->
+
+<script type="text/javascript">
+    function myCheck() {
+    form1.lesson22[0].checked;
+    form1.lesson22[1].checked;
+    form1.lesson22[2].checked;
+    form1.lesson22[3].checked;
+    if(document.form1.lesson22[1].checked && document.form1.lesson22[3].checked) { 
+      document.getElementById("text/javascript").textContent = "正解です！原始関数について理解できたようです！！";
+    }else{
+      document.getElementById("text/javascript").textContent ="不正解です。もう一回解きなおしましょう。";
+       }
+    }
+  </script>
+  <!--ここまで -->
+
+  
+  <p>例12からもわかるように、2xの原始関数はいくつもあるが、それらの違いは、xを含まない定数部分だけである。</p>
+  <p>一般に、関数f(x)の１つの原始関数F(x)がわかれば、f(x)の任意の原始関数は<span class=span>「F(x)+定数」</span>の形に表される。</p>  
+  <p>この定数を<span class=span>積分定数</span>といい、記号Cで表して、f(x)の任意の原始関数をF(x)+Cと表示する。</p>
+  <p>この表示をf(x)の<span class=span>不定積分</span>といい、<span class=span>&int;f(x)dx</span>で表す。</p>
+
+  <!--背景を黄色にするところ-->
+  <h2>関数f(x)の不定積分</h2>
+  <p>F'(x)=f(x)のとき</p>
+  <h3><span class=span>&int;f(x)dx = F(x)+C</span>　ただし、Cは積分定数</h3>
+  <!--ここまで-->
+  
+  <p>関数f(x)の不定積分を求めることを、f(x)を<span class=span>積分する</span>という。</p>
+  <p>積分することと微分することとは、互いに逆の計算であるといえる。</p>
+
+  <h4>例13</h4>
+  <p></p>(x)'= 1, (&frac12;x<sup>2</sup>)' = x, (&frac13;x<sup>3</sup>)' = x<sup>2</sup>であるから</p>
+  <p>&int;1dx = x + C (Cは積分定数)</p>
+  <p>&int;xdx = &frac12;x<sup>2</sup> + C (Cは積分定数)</p>
+  <p>&int;x<sup>2</sup>dx = &frac13;x<sup>3</sup> + C (Cは積分定数)</p>
+
+  <span class=span>※期末試験でこのような解答があると減点です！！</span>
+  <p>&int;x<sup>4</sup>dx = &frac15;x<sup>5</sup> + C  　　　←Cの説明が抜けているため</p>
+
+  <h4>練習23　ここで自分で問題を作って、グラフを作成させてみよう！</h4>
+  <p>自分で問題を作って自力で問題を解いてから使ってね！</p>
+  <!-- 自分で問題を作ったうえで、テンプレートとなる計算式に何乗とxの係数の値などをキー入力で入力してプログラミングで計算して出力→その解答と答え合わせを行う。-->
+  <form onsubmit="calculateIntegral(event)">
+  <p>&int; <input type="number" id="numerator" min="-10" max="10"> / <input type="number" id="denominator" min="1" max="10"> x<sup><input type="number" id="exponent" min="1" max="5"></sup>dx</p>
+  <button type="submit">計算する</button>
+  </form>
+  <p>不定積分の計算結果</p>
+  <div id = "result"></div>
+  <p>不定積分の式</p>
+  <div id= "integralExpression"></div>
+  
+  <script>
+    function calculateIntegral(event) {
+      event.preventDefault();
+
+      var numerator = parseFloat(document.getElementById('numerator').value);
+      var denominator = parseFloat(document.getElementById('denominator').value);
+      var exponent = parseFloat(document.getElementById('exponent').value);
+
+      const a = 0; // 積分区間の下限
+      const b = 1; // 積分区間の上限
+      const n = 1000; // 分割数（大きいほど精度が向上します）
+
+      const h = (b - a) / n; // 分割幅
+
+      let sum = 0;
+
+      for (let i = 0; i < n; i++) {
+        const x1 = a + i * h;
+        const x2 = a + (i + 1) * h;
+
+        const f1 = evalExpression(numerator, denominator, exponent, x1);
+        const f2 = evalExpression(numerator, denominator, exponent, x2);
+
+        sum += (f1 + f2) / 2;
+      }
+
+      const result = sum * h;
+      denominator += 1;
+      exponent += 1;
+      const integralExpression = `${numerator} / ${denominator} * x^${exponent} + C`;
+
+      document.getElementById('result').textContent = result.toString();
+      document.getElementById('integralExpression').textContent = integralExpression.toString();
+    }
+
+    function evalExpression(numerator, denominator, exponent, x) {
+      const mathExpression = `(${numerator} / ${denominator}) * x^${exponent}`;
+      const scope = { x: x };
+      const evaluatedExpression = math.evaluate(mathExpression, scope);
+      return evaluatedExpression;
+    }
+  </script>
+
+  <h4>練習23の発展問題</h4>
+  <p>数字を選択して自動的にグラフを作成させるのではなく、自分でGeoGebra計算ソフトを使ってグラフを描いて視覚化したい人向け</p>
+  <a href = "GeoGebraの説明.html">GeoGebra計算ソフトページへ</a>
+  
+  <!--背景を黄色にするところ-->
+  <h2>関数x<sup>n</sup>の不定積分</h2>
+  <h3><span class=span>&int;x<sup>n</sup>dx = 1 / n+1 x<sup>n+1</sup>+ C　(Cは積分定数)</span>　ただし、Cは積分定数</h3>
+  <!--ここまで-->
+</body>
+</html>

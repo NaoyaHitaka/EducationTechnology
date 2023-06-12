@@ -1,0 +1,211 @@
+<html>
+    <head>
+        <!-- Chart.jsのスクリプトタグ -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+ <body>  
+  <h2>関数の定数倍及び和、差の定積分</h2>
+  １．<h4>&int; <sub>a</sub><sup>b</sup> kf(x)dx = k &int; <sub>a</sub><sup>b</sup>f(x)dx  kは定数</h4>
+  ２．<h4>&int; <sub>a</sub><sup>b</sup>{f(x) + g(x)}dx = &int;<sub>a</sub><sup>b</sup>f(x)dx + &int;<sub>a</sub><sup>b</sup>g(x)dx</h4>
+  ３．<h4>&int; <sub>a</sub><sup>b</sup>{f(x) + g(x)}dx = &int;<sub>a</sub><sup>b</sup>f(x)dx - &int;<sub>a</sub><sup>b</sup>g(x)dx</h4>
+
+  <h4>例18 &int; <sub>1</sub><sup>2</sup> (x<sup>2</sup> + 3x) dx + &int; <sub>1</sub><sup>2</sup>(x<sup>2</sup> - 3x)dx　を求めよ</h4>
+  <p>&int; <sub>1</sub><sup>2</sup> (x<sup>2</sup> + 3x) dx + &int; <sub>1</sub><sup>2</sup>(x<sup>2</sup> - 3x)dx</p>
+  <p>= &int; <sub>1</sub><sup>2</sup>{(x<sup>2</sup> + 3x) + (x<sup>2</sup> - 3x)}dx</p>
+  <p>= &int; <sub>1</sub><sup>2</sup> 2x<sup>2</sup>dx = 2[x<sup>3</sup> / 3]<sub>1</sub><sup>2</sup> = 2(2<sup>3</sup> - 1<sup>3</sup>) / 3</p>
+  <p>= 14 / 3</p>
+
+
+  <h4>練習30 次の定積分を求めよ。</h4>
+  <p>&int; <sub>-1</sub><sup>1</sup>(x + 2)<sup>2</sup>dx - &int; <sub>-1</sub><sup>1</sup>(x - 2)<sup>2</sup></p>
+  <!-- 計算結果の表示 -->
+<form onsubmit="calculateDefiniteIntegral12(event)">
+    <button type="submit">計算結果の表示</button>
+  </form>
+  
+  <!-- 結果を表示する領域 -->
+  <div id="result12"></div>
+  
+  
+  <script>
+    function calculateDefiniteIntegral12(event) {
+      event.preventDefault();
+  
+      const a = -1; // 積分区間の下限
+      const b = 1; // 積分区間の上限
+  
+      const result12 = calculateIntegral(a, b);
+      document.getElementById('result12').textContent = `定積分の計算結果: ${result12}`;
+    }
+  
+    function calculateIntegral(a, b) {
+      const n = 1000; // 積分区間を等分割する数
+      const h = (b - a) / n; // 分割幅
+  
+      let sum1 = 0;
+      let sum2 = 0;
+  
+      for (let i = 0; i < n; i++) {
+        const x = a + (i + 0.5) * h; // 台形則における中点のx座標
+        const f1 = Math.pow(x + 2, 2); // 第1項の被積分関数の値
+        const f2 = Math.pow(x - 2, 2); // 第2項の被積分関数の値
+        sum1 += f1 * h;
+        sum2 += f2 * h;
+      }
+  
+      return sum1 - sum2;
+    }
+  </script>
+  
+
+  <h2>定積分の性質</h2>
+  １．<h4>&int; <sub>a</sub><sup>a</sup>f(x)dx = 0</h4>
+  ２．<h4>&int; <sub>b</sub><sup>a</sup>f(x)dx = - &int; <sub>a</sub><sup>b</sup>f(x)dx</h4>
+  ３．<h4>&int; <sub>a</sub><sup>b</sup>f(x)dx = &int; <sub>a</sub><sup>c</sup>f(x)dx + &int; <sub>c</sub><sup>b</sup>f(x)dx</h4>
+
+  <h4>例19 &int; <sub>0</sub><sup>1</sup>(x<sup>2</sup> - x)dx + &int; <sub>1</sub><sup>2</sup>(x<sup>2</sup> - x)dx　を求めよ。</h4>
+  <p>&int; <sub>0</sub><sup>1</sup>(x<sup>2</sup> - x)dx + &int; <sub>1</sub><sup>2</sup>(x<sup>2</sup> - x)dx</p>
+  <p>= &int;<sub>0</sub><sup>2</sup>(x<sup>2</sup> - x)dx</p>
+  <p>= [x<sup>3</sup> / 3 - x<sup>2</sup> / 2]<sub>0</sub><sup>2</sup></p>
+  <p>= &frac23;</p>
+
+  <h4>練習31 次の定積分を求めよ。</h4>
+  <p>(1)&int; <sub>1</sub><sup>2</sup>(3x<sup>2</sup> - 4x)dx + &int; <sub>2</sub><sup>3</sup>(3x<sup>2</sup>- 4x)dx</p>
+<!-- 計算ボタン -->
+<button onclick="calculateDefiniteIntegral1()">計算結果の表示</button>
+<div id="result1"></div>
+<script>
+  function calculateDefiniteIntegral1() {
+    const result1 = calculateIntegral1();
+    const result2 = calculateIntegral2();
+    const totalResult = result1 + result2;
+
+    document.getElementById('result1').textContent = `計算結果: ${totalResult}`;
+  }
+
+  function calculateIntegral1() {
+    const a1 = 1; // 積分区間の下限
+    const b1 = 2; // 積分区間の上限
+
+    // 定積分の計算式
+    const result1 = (3 / 3) * (Math.pow(b1, 3) - Math.pow(a1, 3)) - 4 * (Math.pow(b1, 2) - Math.pow(a1, 2));
+    return result1;
+  }
+
+  function calculateIntegral2() {
+    const a2 = 2; // 積分区間の下限
+    const b2 = 3; // 積分区間の上限
+
+    // 定積分の計算式
+    const result2 = (3 / 3) * (Math.pow(b2, 3) - Math.pow(a2, 3)) - 4 * (Math.pow(b2, 2) - Math.pow(a2, 2));
+    return result2;
+  }
+</script>
+
+
+  <p>(2)&int; <sub>0</sub><sup>3</sup>(x<sup>2</sup> + 2x)dx - &int; <sub>1</sub><sup>3</sup>(x<sup>2</sup>+ 2x)</p>
+  <!-- 計算結果を表示する領域 -->
+
+
+<!-- 計算ボタン -->
+<button onclick="calculateDefiniteIntegral2()">計算結果の表示</button>
+<div id="result2"></div>
+<script>
+  function calculateDefiniteIntegral2() {
+    const result3 = calculateIntegral3();
+    const result4 = calculateIntegral4();
+    const totalResult = result3 - result4;
+
+    document.getElementById('result2').textContent = `計算結果: ${totalResult}`;
+  }
+
+  function calculateIntegral3() {
+    const a1 = 0; // 積分区間の下限
+    const b1 = 3; // 積分区間の上限
+
+    // 定積分の計算式
+    const result3 = (1 / 3) * (Math.pow(b1, 3) + 2 * Math.pow(b1, 2)) - (1 / 3) * (Math.pow(a1, 3) + 2 * Math.pow(a1, 2));
+    return result3;
+  }
+
+  function calculateIntegral4() {
+    const a2 = 1; // 積分区間の下限
+    const b2 = 3; // 積分区間の上限
+
+    // 定積分の計算式
+    const result4 = (1 / 3) * (Math.pow(b2, 3) + 2 * Math.pow(b2, 2)) - (1 / 3) * (Math.pow(a2, 3) + 2 * Math.pow(a2, 2));
+    return result4;
+  }
+</script>
+
+<h4>練習31 + α 他の学生が考えた定積分を自分で計算して、下のところに数字を入れて、答え合わせをしてみるよー</h4>
+<!-- 入力フォーム -->
+<form id="integralForm">
+    <label for="sub1">下限1：</label>
+    <input type="number" id="sub1" min="-10" max="10" required>
+    <br>
+    <label for="sup1">上限1：</label>
+    <input type="number" id="sup1" min="-10" max="10" required>
+    <br>
+    <label for="numerator1">定積分1の分子：</label>
+    <input type="number" id="numerator1" min="-10" max="10" required>
+    <br>
+    <label for="denominator1">定積分1の分母：</label>
+    <input type="number" id="denominator1" min="1" max="10" required>
+    <br>
+    <label for="sub2">下限2：</label>
+    <input type="number" id="sub2" min="-10" max="10" required>
+    <br>
+    <label for="sup2">上限2：</label>
+    <input type="number" id="sup2" min="-10" max="10" required>
+    <br>
+    <label for="numerator2">定積分2の分子：</label>
+    <input type="number" id="numerator2" min="-10" max="10" required>
+    <br>
+    <label for="denominator2">定積分2の分母：</label>
+    <input type="number" id="denominator2" min="1" max="10" required>
+    <br>
+    <button type="submit">計算結果の表示</button>
+  </form>
+  
+  <!-- 結果を表示する領域 -->
+  <div id="result"></div>
+  
+  <script>
+    function calculateDefiniteIntegral(event) {
+      event.preventDefault();
+  
+      // 入力値の取得
+      const sub1 = parseFloat(document.getElementById("sub1").value);
+      const sup1 = parseFloat(document.getElementById("sup1").value);
+      const numerator1 = parseFloat(document.getElementById("numerator1").value);
+      const denominator1 = parseFloat(document.getElementById("denominator1").value);
+      const sub2 = parseFloat(document.getElementById("sub2").value);
+      const sup2 = parseFloat(document.getElementById("sup2").value);
+      const numerator2 = parseFloat(document.getElementById("numerator2").value);
+      const denominator2 = parseFloat(document.getElementById("denominator2").value);
+  
+      // 定積分の計算
+      const integral1 = calculateIntegral(sub1, sup1, numerator1, denominator1);
+      const integral2 = calculateIntegral(sub2, sup2, numerator2, denominator2);
+  
+      // 結果の表示
+      const result = document.getElementById("result");
+      result.innerHTML = `定積分1の結果: ${integral1}<br>定積分2の結果: ${integral2}`;
+      
+    }
+  
+    function calculateIntegral(sub, sup, numerator, denominator) {
+      // 定積分の計算式（ここに計算式を記述してください）
+      // 例: (numerator / denominator) * x の積分結果を計算する場合
+      const result = ((numerator / denominator) * (sup ** 2 - sub ** 2)) / 2;
+  
+      return result;
+    }
+  
+    const form = document.getElementById("integralForm");
+    form.addEventListener("submit", calculateDefiniteIntegral);
+  </script>
+  
+ </body>
+</html>

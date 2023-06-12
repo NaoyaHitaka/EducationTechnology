@@ -1,0 +1,451 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+  </head>
+    <body>
+        <h1>P.192 不定積分を求める</h1>
+  <p>関数の定数倍および和、差の不定積分について調べよう。</p>
+  <p>F'(x) = f(x)であるとする。このとき、定数kに対して</p>
+  <h4>(kF(x))' = kF'(x) = kf(x)</h4>
+  <p>となるから、kF(x)は関数kf(x)の原始関数の１つである。</p>
+  <p>すなわち</p>
+  <p>&int;kf(x)dx = kF(x) + C (Cは積分定数)</p>
+  <p>同様にして、次のことが言える。</p>
+
+  <!-- ここから背景を黄色にするところ -->
+  <h2>関数の定数倍および和、差の不定積分</h2>
+  <p>F'(x) = f(x), G'(x) = g(x)のとき</p>
+  <h4>１．　&int;kf(x)dx = kF(x) + C</h4> kは定数
+  <h4>２．　&int;{f(x) + g(x)}dx = F(x) + G(x) + C</h4>
+  <h4>３．　&int;{f(x) - g(x)}dx = F(x) + G(x) + C</h4>
+  <!-- ここまで -->
+  
+  <p>上の性質と前のページに示した「関数x<sup>n</sup>の不定積分」を使って、xの整式で表される関数の不定積分を求めてみよう。</p>
+
+  <h4>例14</h4>
+  <p>(1) &int;4x<sup>2</sup>dx = 4 * &frac13;x<sup>3</sup>+C = 4 / 3 x<sup>3</sup>+ C</p>
+  <p>(2) &int;(3x<sup>2</sup>-5x+2) dx = 3 * &frac13;x<sup>3</sup>- 5 * &frac12;x <sup>2</sup> + 2x + C = x<sup>3</sup>- 5 / 2 x<sup>2</sup>+ 2x + C</p>
+
+  <h4>練習24</h4>
+  <p>(1)∫6x<sup>2</sup>dx</p>
+<!-- 計算結果の表示 -->
+<form onsubmit="calculateIntegral4(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<p>不定積分の計算結果</p>
+  <div id = "result"></div>
+  <p>不定積分の式</p>
+  <div id= "integralExpression"></div>
+  
+  <script>
+    function calculateIntegral4(event) {
+      event.preventDefault();
+
+      var numerator = 6;
+      var denominator = 3;
+      var exponent = 3;
+
+      const a = 0; // 積分区間の下限
+      const b = 1; // 積分区間の上限
+      const n = 1000; // 分割数（大きいほど精度が向上します）
+
+      const h = (b - a) / n; // 分割幅
+
+      let sum = 0;
+
+      for (let i = 0; i < n; i++) {
+        const x1 = a + i * h;
+        const x2 = a + (i + 1) * h;
+
+        const f1 = evalExpression(numerator, denominator, exponent, x1);
+        const f2 = evalExpression(numerator, denominator, exponent, x2);
+
+        sum += (f1 + f2) / 2;
+      }
+
+      const result = sum * h;
+      const integralExpression = `${numerator} / ${denominator} * x^${exponent} + C`;
+
+      document.getElementById('result').textContent = result.toString();
+      document.getElementById('integralExpression').textContent = integralExpression.toString();
+    }
+
+    function evalExpression(numerator, denominator, exponent, x) {
+      const mathExpression = `(${numerator} / ${denominator}) * x^${exponent}`;
+      const scope = { x: x };
+      const evaluatedExpression = math.evaluate(mathExpression, scope);
+      return evaluatedExpression;
+    }
+  </script>
+
+
+
+  <p>(2) &int;(x<sup>2</sup>+x-1)dx</p>
+    <!-- 計算結果の表示 -->
+<form onsubmit="calculateIntegral5(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 計算結果と計算過程の式を表示する領域 -->
+<p>不定積分の計算結果</p>
+<div id="result5"></div>
+<p>不定積分の式</p>
+<div id="integralExpression5"></div>
+
+<script>
+  function calculateIntegral5(event) {
+    event.preventDefault();
+
+    const numerator1 = 1;
+    const denominator1 = 3; // 2 + 1 = 3
+    const exponent1 = 2;
+
+    const numerator2 = 1;
+    const denominator2 = 2;
+    const exponent2 = 1;
+
+    const numerator3 = -1;
+
+    const a = 0; //積分区間の下限
+    const b = 1; //積分区間の上限
+
+    const result5 = integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b);
+    const integralExpression5 = generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3);
+    document.getElementById('result5').textContent = `${result5}`;
+    document.getElementById('integralExpression5').innerHTML = `${integralExpression5}`;
+  }
+
+  function integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b) {
+    const h = (b - a) / 1000; // 分割幅
+    let sum = 0;
+
+    for (let i = 0; i < 1000; i++) {
+      const x1 = a + i * h;
+      const x2 = a + (i + 1) * h;
+
+      const f1 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x1);
+      const f2 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x2);
+
+      sum += (f1 + f2) / 2;
+    }
+
+    const result = sum * h;
+    return result;
+  }
+
+  function evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x) {
+    return (numerator1 / denominator1) * Math.pow(x, exponent1) + (numerator2 / denominator2) * Math.pow(x, exponent2) + numerator3;
+  }
+
+  function generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3) {
+    const integralExpression5 = `∫(${numerator1}x^${exponent1} + ${numerator2}x^${exponent2} + ${numerator3})dx = (${numerator1 / (exponent1 + 1)}x^${exponent1 + 1} + ${numerator2 / (exponent2 + 1)}x^${exponent2 + 1} + ${numerator3}x) + C`;
+    return integralExpression5;
+  }
+</script>
+
+
+
+  <p>(3) &int;(3x<sup>2</sup>-2x+5)dx</p>
+  <!-- 計算結果の表示 -->
+<form onsubmit="calculateIntegral6(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 計算結果と計算過程の式を表示する領域 -->
+<p>不定積分の計算結果</p>
+<div id="result6"></div>
+<p>不定積分の式</p>
+<div id="integralExpression6"></div>
+
+<script>
+  function calculateIntegral6(event) {
+    event.preventDefault();
+
+    const numerator1 = 3;
+    const denominator1 = 3; // 2 + 1 = 3
+    const exponent1 = 2;
+
+    const numerator2 = -2;
+    const denominator2 = 2;
+    const exponent2 = 1;
+
+    const numerator3 = 5;
+
+    const a = 0; //積分区間の下限
+    const b = 1; //積分区間の上限
+
+    const result6 = integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b);
+    const integralExpression6 = generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3);
+    document.getElementById('result6').textContent = `${result6}`;
+    document.getElementById('integralExpression6').innerHTML = `${integralExpression6}`;
+  }
+
+  function integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b) {
+    const h = (b - a) / 1000; // 分割幅
+    let sum = 0;
+
+    for (let i = 0; i < 1000; i++) {
+      const x1 = a + i * h;
+      const x2 = a + (i + 1) * h;
+
+      const f1 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x1);
+      const f2 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x2);
+
+      sum += (f1 + f2) / 2;
+    }
+
+    const result = sum * h;
+    return result;
+  }
+
+  function evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x) {
+    return (numerator1 / denominator1) * Math.pow(x, exponent1) + (numerator2 / denominator2) * Math.pow(x, exponent2) + numerator3;
+  }
+
+  function generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3) {
+    const integralExpression5 = `∫(${numerator1}x^${exponent1} + ${numerator2}x^${exponent2} + ${numerator3})dx = (${numerator1 / (exponent1 + 1)}x^${exponent1 + 1} + ${numerator2 / (exponent2 + 1)}x^${exponent2 + 1} + ${numerator3}x) + C`;
+    return integralExpression5;
+  }
+</script>
+
+  <p>(4) &int;(-2x<sup>2</sup>-x+7)dx</p>
+  <!-- 計算結果の表示 -->
+<form onsubmit="calculateIntegral7(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 計算結果と計算過程の式を表示する領域 -->
+<p>不定積分の計算結果</p>
+<div id="result7"></div>
+<p>不定積分の式</p>
+<div id="integralExpression7"></div>
+
+<script>
+  function calculateIntegral7(event) {
+    event.preventDefault();
+
+    const numerator1 = -2;
+    const denominator1 = 3; // 2 + 1 = 3
+    const exponent1 = 2;
+
+    const numerator2 = -1;
+    const denominator2 = 2;
+    const exponent2 = 1;
+
+    const numerator3 = 7;
+
+    const a = 0; //積分区間の下限
+    const b = 1; //積分区間の上限
+
+    const result7 = integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b);
+    const integralExpression7 = generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3);
+    document.getElementById('result7').textContent = `${result7}`;
+    document.getElementById('integralExpression7').innerHTML = `${integralExpression7}`;
+  }
+
+  function integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b) {
+    const h = (b - a) / 1000; // 分割幅
+    let sum = 0;
+
+    for (let i = 0; i < 1000; i++) {
+      const x1 = a + i * h;
+      const x2 = a + (i + 1) * h;
+
+      const f1 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x1);
+      const f2 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x2);
+
+      sum += (f1 + f2) / 2;
+    }
+
+    const result7 = sum * h;
+    return result7;
+  }
+
+  function evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x) {
+    return (numerator1 / denominator1) * Math.pow(x, exponent1) + (numerator2 / denominator2) * Math.pow(x, exponent2) + numerator3;
+  }
+
+  function generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3) {
+    const integralExpression7 = `∫(${numerator1}x^${exponent1} + ${numerator2}x^${exponent2} + ${numerator3})dx = (${numerator1 / (exponent1 + 1)}x^${exponent1 + 1} + ${numerator2 / (exponent2 + 1)}x^${exponent2 + 1} + ${numerator3}x) + C`;
+    return integralExpression7;
+  }
+</script>
+
+
+
+  <h4>練習24発展問題</h4>
+  <p>パターン１</p>
+  <form onsubmit="calculateIntegral1(event)">
+    <p>&int; <input type="number" id="numerator" min="-10" max="10"> / <input type="number" id="denominator" min="1" max="10"> x<sup><input type="number" id="exponent" min="1" max="5"></sup>dx</p>
+    <button type="submit">計算する</button>
+    </form>
+    <p>不定積分の計算結果</p>
+    <div id = "result1"></div>
+    <p>不定積分の式</p>
+    <div id= "integralExpression1"></div>
+    
+    <script>
+      function calculateIntegral1(event) {
+        event.preventDefault();
+  
+        var numerator = parseFloat(document.getElementById('numerator').value);
+        var denominator = parseFloat(document.getElementById('denominator').value);
+        var exponent = parseFloat(document.getElementById('exponent').value);
+  
+        const a = 0; // 積分区間の下限
+        const b = 1; // 積分区間の上限
+        const n = 1000; // 分割数（大きいほど精度が向上します）
+  
+        const h = (b - a) / n; // 分割幅
+  
+        let sum = 0;
+  
+        for (let i = 0; i < n; i++) {
+          const x1 = a + i * h;
+          const x2 = a + (i + 1) * h;
+  
+          const f1 = evalExpression(numerator, denominator, exponent, x1);
+          const f2 = evalExpression(numerator, denominator, exponent, x2);
+  
+          sum += (f1 + f2) / 2;
+        }
+  
+        const result1 = sum * h;
+        denominator += 1;
+        exponent += 1;
+        const integralExpression1 = `${numerator} / ${denominator} * x^${exponent} + C`;
+  
+        document.getElementById('result1').textContent = result1.toString();
+        document.getElementById('integralExpression1').textContent = integralExpression1.toString();
+      }
+  
+      function evalExpression(numerator, denominator, exponent, x) {
+        const mathExpression = `(${numerator} / ${denominator}) * x^${exponent}`;
+        const scope = { x: x };
+        const evaluatedExpression = math.evaluate(mathExpression, scope);
+        return evaluatedExpression;
+      }
+    </script>
+
+<p>パターン２</p>
+<form onsubmit="calculateIntegral2(event)">
+  <p>&int; (<input type="number" id="numerator1" min="-10" max="10"> / <input type="number" id="denominator1" min="1" max="10"> x<sup><input type="number" id="exponent1" min="1" max="5"></sup> + <input type="number" id="numerator2" min="-10" max="10"> / <input type="number" id="denominator2" min="1" max="10"> x<sup><input type="number" id="exponent2" min="1" max="5"></sup> + <input type="number" id="numerator3" min="-10" max="10">)dx</p>
+  <button type="submit">計算する</button>    
+  </form>
+  <p>不定積分の計算結果</p>
+  <div id="result2"></div>
+  <p>不定積分の式</p>
+  <div id="integralExpression2"></div>
+
+<script>
+  function calculateIntegral2(event) {
+    event.preventDefault();
+
+    var numerator1 = parseFloat(document.getElementById('numerator1').value);
+    var denominator1 = parseFloat(document.getElementById('denominator1').value);
+    var exponent1 = parseFloat(document.getElementById('exponent1').value);
+    var numerator2 = parseFloat(document.getElementById('numerator2').value);
+    var denominator2 = parseFloat(document.getElementById('denominator2').value);
+    var exponent2 = parseFloat(document.getElementById('exponent2').value);
+    var numerator3 = parseFloat(document.getElementById('numerator3').value);
+
+    const a = 0; // 積分区間の下限
+    const b = 1; // 積分区間の上限
+    const n = 1000; // 分割数（大きいほど精度が向上します）
+
+    const h = (b - a) / n; // 分割幅
+
+    let sum = 0;
+
+    for (let i = 0; i < n; i++) {
+      const x1 = a + i * h;
+      const x2 = a + (i + 1) * h;
+
+      const f1 = evalExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x1) + numerator3;
+      const f2 = evalExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x2) + numerator3;
+
+      sum += (f1 + f2) / 2;
+    }
+
+    const result2 = sum * h;
+    denominator1 += 1;
+    exponent1 += 1;
+    denominator2 += 1;
+    exponent2 += 1;
+    
+    const integralExpression2 = `(${numerator1} / ${denominator1}) * x^${exponent1} + (${numerator2} / ${denominator2}) * x^${exponent2} + ${numerator3} + C`;
+
+    document.getElementById('result2').textContent = result2.toString();
+    document.getElementById('integralExpression2').textContent = integralExpression2.toString();
+
+    function evalExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x) {
+      const mathExpression = `(${numerator1} / ${denominator1}) * x^${exponent1} + (${numerator2} / ${denominator2}) * x^${exponent2} + ${numerator3}` ;
+      const scope = { x: x };
+      const evaluatedExpression = math.evaluate(mathExpression, scope);
+      return evaluatedExpression;
+    }
+  }
+</script>
+
+<p>パターン３</p>
+<form onsubmit="calculateIntegral3(event)">
+  <p>&int; (<input type="number" id="numerator4" min="-10" max="10"> / <input type="number" id="denominator4" min="1" max="10"> x<sup><input type="number" id="exponent4" min="1" max="5"></sup> - <input type="number" id="numerator5" min="-10" max="10"> / <input type="number" id="denominator5" min="1" max="10"> x<sup><input type="number" id="exponent5" min="1" max="5"></sup> + <input type="number" id="numerator6" min="-10" max="10">)dx</p>
+  <button type="submit">計算する</button>    
+  </form>
+  <p>不定積分の計算結果</p>
+  <div id="result3"></div>
+  <p>不定積分の式</p>
+  <div id="integralExpression3"></div>
+
+<script>
+  function calculateIntegral3(event) {
+    event.preventDefault();
+
+    var numerator4 = parseFloat(document.getElementById('numerator4').value);
+    var denominator4 = parseFloat(document.getElementById('denominator4').value);
+    var exponent4 = parseFloat(document.getElementById('exponent4').value);
+    var numerator5 = parseFloat(document.getElementById('numerator5').value);
+    var denominator5 = parseFloat(document.getElementById('denominator5').value);
+    var exponent5 = parseFloat(document.getElementById('exponent5').value);
+    var numerator6 = parseFloat(document.getElementById('numerator6').value);
+
+    const a = 0; // 積分区間の下限
+    const b = 1; // 積分区間の上限
+    const n = 1000; // 分割数（大きいほど精度が向上します）
+
+    const h = (b - a) / n; // 分割幅
+
+    let sum = 0;
+
+    for (let i = 0; i < n; i++) {
+      const x1 = a + i * h;
+      const x2 = a + (i + 1) * h;
+
+      const f1 = evalExpression(numerator4, denominator4, exponent4, numerator5, denominator5, exponent5, numerator5, x1) + numerator6;
+      const f2 = evalExpression(numerator4, denominator4, exponent4, numerator5, denominator5, exponent5, numerator5, x1) + numerator6;
+      sum += (f1 + f2) / 2;
+    }
+
+    const result3 = sum * h;
+    denominator4 += 1;
+    exponent4 += 1;
+    denominator5 += 1;
+    exponent5 += 1;
+    
+    const integralExpression3 = `(${numerator4} / ${denominator4}) * x^${exponent4} - (${numerator5} / ${denominator5}) * x^${exponent5} + ${numerator6} + C`;
+
+    document.getElementById('result3').textContent = result3.toString();
+    document.getElementById('integralExpression3').textContent = integralExpression3.toString();
+
+    function evalExpression(numerator4, denominator4, exponent4, numerator5, denominator5, exponent5, numerator6, x) {
+      const mathExpression = `(${numerator4} / ${denominator4}) * x^${exponent4} - (${numerator5} / ${denominator5}) * x^${exponent5} + ${numerator6}` ;
+      const scope = { x: x };
+      const evaluatedExpression = math.evaluate(mathExpression, scope);
+      return evaluatedExpression;
+    }
+  }
+  </script>
+
+    </body>
+</html>

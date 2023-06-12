@@ -1,0 +1,184 @@
+<html>
+ <body>  
+  <h2>いろいろな関数の不定積分</h2>
+  <h4>例15</h4>
+  <p>(1)&int; 1dt = t + C</p>
+  <p>(2)&int; udu = &frac12; u<sup>2</sup> + C</p>
+  <p>(3)&int; y<sup>2</sup>dy = &frac13; y<sup>3</sup> + C</p>
+
+  <h4>練習25</h4>
+  <p>(1) &int; (2t<sup>2</sup> -3t - 4)dt</p>
+   <!-- 計算結果の表示 -->
+    <form onsubmit="calculateIntegral1(event)">
+    <button type="submit">計算結果の表示</button>
+  </form>
+  
+  <!-- 計算結果と計算過程の式を表示する領域 -->
+  <p>不定積分の計算結果</p>
+  <div id="result1"></div>
+  <p>不定積分の式</p>
+  <div id="integralExpression1"></div>
+  
+  <script>
+    function calculateIntegral1(event) {
+      event.preventDefault();
+  
+      const numerator1 = 2;
+      const denominator1 = 3; // 2 + 1 = 3
+      const exponent1 = 2;
+  
+      const numerator2 = -3;
+      const denominator2 = 2;
+      const exponent2 = 1;
+  
+      const numerator3 = -4;
+  
+      const a = 0; //積分区間の下限
+      const b = 1; //積分区間の上限
+  
+      const result1 = integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b);
+      const integralExpression1 = generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3);
+      document.getElementById('result1').textContent = `${result1}`;
+      document.getElementById('integralExpression1').innerHTML = `${integralExpression1}`;
+    }
+  
+    function integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b) {
+      const h = (b - a) / 1000; // 分割幅
+      let sum = 0;
+  
+      for (let i = 0; i < 1000; i++) {
+        const x1 = a + i * h;
+        const x2 = a + (i + 1) * h;
+  
+        const f1 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x1);
+        const f2 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x2);
+  
+        sum += (f1 + f2) / 2;
+      }
+  
+      const result = sum * h;
+      return result;
+    }
+  
+    function evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x) {
+      return (numerator1 / denominator1) * Math.pow(x, exponent1) + (numerator2 / denominator2) * Math.pow(x, exponent2) + numerator3;
+    }
+  
+    function generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3) {
+      const integralExpression5 = `∫(${numerator1}t^${exponent1} + ${numerator2}t^${exponent2} + ${numerator3})dt = (${numerator1 / (exponent1 + 1)}t^${exponent1 + 1} + ${numerator2 / (exponent2 + 1)}t^${exponent2 + 1} + ${numerator3}t) + C`;
+      return integralExpression5;
+    }
+  </script>
+  <p>(2) &int; (-6u<sup>2</sup> +9u - 3)du</p>
+  <!-- 計算結果の表示 -->
+  <form onsubmit="calculateIntegral2(event)">
+    <button type="submit">計算結果の表示</button>
+  </form>
+  
+  <!-- 計算結果と計算過程の式を表示する領域 -->
+  <p>不定積分の計算結果</p>
+  <div id="result2"></div>
+  <p>不定積分の式</p>
+  <div id="integralExpression2"></div>
+  <script>
+    function calculateIntegral2(event) {
+      event.preventDefault();
+  
+      const numerator1 = -6;
+      const denominator1 = 3; // 2 + 1 = 3
+      const exponent1 = 2;
+  
+      const numerator2 = 9;
+      const denominator2 = 2;
+      const exponent2 = 1;
+  
+      const numerator3 = -3;
+  
+      const a = 0; //積分区間の下限
+      const b = 1; //積分区間の上限
+  
+      const result2 = integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b);
+      const integralExpression2 = generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3);
+      document.getElementById('result2').textContent = `${result2}`;
+      document.getElementById('integralExpression2').innerHTML = `${integralExpression2}`;
+    }
+  
+    function integrate(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, a, b) {
+      const h = (b - a) / 1000; // 分割幅
+      let sum = 0;
+  
+      for (let i = 0; i < 1000; i++) {
+        const x1 = a + i * h;
+        const x2 = a + (i + 1) * h;
+  
+        const f1 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x1);
+        const f2 = evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x2);
+  
+        sum += (f1 + f2) / 2;
+      }
+  
+      const result = sum * h;
+      return result;
+    }
+  
+    function evaluateFunction(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3, x) {
+      return (numerator1 / denominator1) * Math.pow(x, exponent1) + (numerator2 / denominator2) * Math.pow(x, exponent2) + numerator3;
+    }
+  
+    function generateIntegralExpression(numerator1, denominator1, exponent1, numerator2, denominator2, exponent2, numerator3) {
+      const integralExpression2 = `∫(${numerator1}u^${exponent1} + ${numerator2}u^${exponent2} + ${numerator3})du = (${numerator1 / (exponent1 + 1)}u^${exponent1 + 1} + ${numerator2 / (exponent2 + 1)}u^${exponent2 + 1} + ${numerator3}u) + C`;
+      return integralExpression2;
+    }
+    </script>
+
+  <h4>応用例題5</h4>
+  <p>次の2つの条件をともに満たす関数F(t)を求めよ。</p>
+  <p>[1] F'(t) = 3(t-1)<sup>2</sup></p>
+  <p>[1]からF(t) = &int; 3(t-1)<sup>2</sup>dt = &int;(3t<sup>2</sup> -6t + 3)dt = t<sup>3</sup>-3t<sup>2</sup>+3t + C</p>
+  <p>t = 1 として考えると・・・</p>
+  <p>F(1) = 1<sup>3</sup> -3 * 1<sup>2</sup> + 3 * 1 + C  = 1 + C</p>
+  <p>[2]より、1 + C = 0 であるから　C = -1</p>
+  <p>したがって、F(t) = t<sup>3</sup> -3t<sup>2</sup> + 3t - 1</p>
+
+  <h4>練習26</h4>
+<p>次の2つの条件をともに満たす関数F(t)を求めよ。</p>
+<p>[1] F'(t) = 2(t-1)、 [2] F(3) = 1</p>
+
+<!-- 計算結果の表示 -->
+<form onsubmit="solveEquation(event)">
+  <button type="submit">計算結果の表示</button>
+</form>
+
+<!-- 結果を表示する領域 -->
+<div id="result"></div>
+
+<script>
+  function solveEquation(event) {
+    event.preventDefault();
+
+    const result = solveDifferentialEquation();
+    document.getElementById('result').innerHTML = result;
+  }
+
+  function solveDifferentialEquation() {
+    const t0 = 3; // 初期時刻
+    const F0 = 1; // 初期条件
+
+    const equation = "F'(t) = 2(t-1)";
+    const solution = "F(t) = (t-1)^2 + C";
+
+    const constant = solveConstant(t0, F0);
+    const result = `${equation}<br>${solution}<br><br>条件 [2] を用いて、C の値を求める:<br>${solution.replace("C", constant)}`;
+
+    return result;
+  }
+
+  function solveConstant(t0, F0) {
+    // 条件 [2]: F(3) = 1
+    const constant = Math.pow(t0 - 1, 2) - F0;
+    return constant;
+  }
+</script>
+
+ </body>
+</html>
